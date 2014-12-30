@@ -8,7 +8,10 @@
 	<description>Fast implementation of CRC64</description>
 
 	<licenses>
-		<license>CC BY-SA</license>
+		<license>
+			<name>CC BY-SA</name>
+			<url>https://creativecommons.org/licenses/by-sa/2.0/</url>
+		</license>
 	</licenses>
 
 	<properties>
