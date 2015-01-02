@@ -9,6 +9,7 @@ import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 /**
  *
@@ -70,6 +71,7 @@ public class CRC64Test
      * @throws IOException
      */
     @Test
+    @Category(org.junit.experimental.categories.Categories.ExcludeCategory.class)
     public void testPerformance() throws IOException
     {
         byte[] b = new byte[65536];

@@ -117,7 +117,7 @@ public class CRC64
      * Calculate the CRC64 of the given file's content.
      *
      * @param f
-     * @return
+     * @return new {@link CRC64} instance initialized to the file's CRC value
      * @throws IOException
      *             in case the {@link FileInputStream#read(byte[])} method fails
      */
@@ -132,7 +132,7 @@ public class CRC64
      *
      * @param in
      *            the stream will be closed automatically
-     * @return
+     * @return new {@link CRC64} instance initialized to the {@link InputStream}'s CRC value
      * @throws IOException
      *             in case the {@link InputStream#read(byte[])} method fails
      */
