@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.zip.Checksum;
 
 /**
  * CRC-64 implementation with ability to combine checksums calculated over
@@ -19,7 +20,7 @@ import java.io.InputStream;
  * @author Roman Nikitchenko (roman@nikitchenko.dp.ua)
  * @author Michael Böckling
  */
-public class CRC64
+public class CRC64 implements Checksum
 {
 
     private final static long POLY = (long) 0xc96c5795d7870f42L; // ECMA-182
@@ -97,6 +98,22 @@ public class CRC64
     {
         this.value = 0;
         update(b, len);
+    }
+
+    /**
+     * Initialize by calculating the CRC of the given byte blocks.
+     *
+     * @param b
+     *            block of bytes
+     * @param off
+     *            starting offset of the byte block
+     * @param len
+     *            number of bytes to process
+     */
+    public CRC64(byte[] b, int off, int len)
+    {
+        this.value = 0;
+        update(b, off, len);
     }
 
     /**
@@ -181,13 +198,20 @@ public class CRC64
     /**
      * Update CRC64 with new byte block.
      */
-    public void update(byte[] b, int len)
+    public void update(byte[] b, int len) {
+        this.update(b, 0, len);
+    }
+
+    /**
+     * Update CRC64 with new byte block.
+     */
+    public void update(byte[] b, int off, int len)
     {
         this.value = ~this.value;
 
         /* fast middle processing, 8 bytes (aligned!) per loop */
 
-        int idx = 0;
+        int idx = off;
         while (len >= 8)
         {
             value = table[7][(int) (value & 0xff ^ (b[idx] & 0xff))]
@@ -211,6 +235,14 @@ public class CRC64
         }
 
         this.value = ~this.value;
+    }
+
+    public void update(int b) {
+        this.update(new byte[]{(byte)b}, 0, 1);
+    }
+
+    public void reset() {
+        this.value = 0;
     }
 
     // dimension of GF(2) vectors (length of CRC)
