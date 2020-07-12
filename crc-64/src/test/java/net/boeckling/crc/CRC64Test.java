@@ -101,6 +101,58 @@ public class CRC64Test
 
     /**
      *
+     */
+    @Test
+    public void testOffset()
+    {
+        final byte[] TEST1 = "12345678901".getBytes();
+        final int TESTOFF1 = 1;
+        final int TESTLEN1 = 9;
+
+        CRC64 crc1 = new CRC64(TEST1, TESTOFF1, TESTLEN1);
+        final long value1 = crc1.getValue();
+
+        final byte[] TEST2 = "234567890".getBytes();
+        final int TESTOFF2 = 0;
+        final int TESTLEN2 = 9;
+
+        CRC64 crc2 = new CRC64(TEST2, TESTOFF2, TESTLEN2);
+        final long value2 = crc2.getValue();
+
+        Assert.assertEquals("oh noes", value1, value2);
+    }
+
+    /**
+     *
+     */
+    @Test
+    public void testUpdateAndReset()
+    {
+        CRC64 crc = new CRC64();
+
+        final byte[] TEST1 = "123456789".getBytes();
+        final int TESTLEN1 = 9;
+        final long TESTCRC1 = 0x995dc9bbdf1939faL; // ECMA.
+
+        crc.update(TEST1, TESTLEN1);
+
+        Assert.assertEquals("oh noes", TESTCRC1, crc.getValue());
+
+        crc.reset();
+
+        Assert.assertEquals("oh noes", 0, crc.getValue());
+
+        final byte[] TEST2 = "This is a test of the emergency broadcast system.".getBytes();
+        final int TESTLEN2 = 49;
+        final long TESTCRC2 = 0x27db187fc15bbc72L; // ECMA.
+
+        crc.update(TEST2, TESTLEN2);
+
+        Assert.assertEquals("oh noes", TESTCRC2, crc.getValue());
+    }
+
+    /**
+     *
      * @param b
      * @param len
      * @param crcValue
